@@ -1,6 +1,7 @@
 # Prerequisites
 *.d
 *.bin
+*.gitignore
 
 # Object files
 *.o
@@ -46,7 +47,7 @@
 
 
 #Texto
-.txt
+*.txt
 
 # Kernel Module Compile Results
 *.mod*
