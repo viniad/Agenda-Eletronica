@@ -3,11 +3,7 @@
 #include <string.h>
 #include <locale.h>
 
-
 /* Nome: Vinicius de Andrade Silva   -    Ra: 221170509 */
-
-
-
 
 typedef struct{
 	char nome[50];
@@ -44,7 +40,6 @@ contato criaContato(){
 	fgets(cont.nome, 50, stdin);
 	apagaEnter(cont.nome);
 	
-	
 	puts("Telefone:");
 	fflush(stdin);
 	fgets(cont.tel, 20, stdin);
@@ -75,7 +70,7 @@ contato criaContato(){
 	fgets(cont.convenio, 15, stdin);
 	apagaEnter(cont.convenio);
 	
-	puts("Religiao:");
+	puts("Religião:");
 	fflush(stdin);
 	fgets(cont.religiao, 15, stdin);
 	apagaEnter(cont.religiao);
@@ -89,7 +84,6 @@ contato criaContato(){
 	fflush(stdin);
 	fgets(cont.estado, 3, stdin);
 	apagaEnter(cont.estado);
-	
 	
 	return cont;
 }
@@ -110,8 +104,6 @@ void listaContato(contato c){
 	printf("Religião:          %s\n", c.religiao);
 	printf("Cidade:            %s\n", c.cidade);
 	printf("Estado:            %s\n", c.estado);
-	
-	
 	puts("");
 }
 
@@ -170,7 +162,7 @@ void menu(){
 	printf("(3) Alterar contato\n");
 	printf("(4) Listar todos os contatos\n");
 	printf("(5) Excluir\n");
-	printf("(6) Sair\n");
+	printf("(6) Salvar e Sair\n");
 	puts("");
 }
 
@@ -185,14 +177,13 @@ int comparaRG(contato a, char vetor[]){
 int busca(const agenda* a, char vetor[], int opc){
 	int i;
 
-	
 	if(opc == 1){
 		for(i=0; i<a->total; i++){	
 			if(comparaNome(a->contatos[i], vetor) == 0){
 				return i;
 			}
-	}
-	return -1;
+		}
+		return -1;
 	}else{
 		for(i=0; i<a->total; i++){	
 			if(comparaRG(a->contatos[i], vetor) == 0){
@@ -204,39 +195,9 @@ int busca(const agenda* a, char vetor[], int opc){
 
 }
 
-
-
-
-void gravaBinario(agenda *a){
-	FILE *f = fopen("agBinaria.txt", "wb");
-	int i;
-	for(i=0; i<a->total; i++){
-		fwrite(&a->total, sizeof(int), 1, f);
-		fwrite(a->contatos[i].nome, sizeof(a->contatos[0].nome), 1, f);
-	}	
-	
-	
-	
-	
-	fclose(f);
-}
-
-
-void leBinario(const char* arq, agenda *a){
-	FILE *fp;
-	fp = fopen(arq, "rb");
-	
-	
-	
-	
-	
-	
-}
-
 void gravaTexto(agenda *a){
 	FILE *fp;
 	fp = fopen("contatos.txt", "w");
-	
 	
 	int i;
 	for(i=0; i<a->total; i++){
@@ -261,15 +222,8 @@ void leTexto(const char* arq, agenda *a){
 	int id;
 	
 	FILE *fp2 = fopen(arq, "r");
-	//fscanf(fp2, "%d", &a->total);
-	
-	
-		/*while(!feof(fp2))
-		{*/
 		for(i=0; i<2; i++){
-			
-			fscanf(fp2, "%d\n", &a->total);
-			///fscanf(fp2, "%c", &bug);			
+			fscanf(fp2, "%d\n", &a->total);		
 			fgets(a->contatos[i].nome, 50, fp2);
 			a->contatos[i].nome[strlen(a->contatos[i].nome)-1] = 0;
 			fscanf(fp2, "%s\n", a->contatos[i].tel);
@@ -281,16 +235,14 @@ void leTexto(const char* arq, agenda *a){
 			fscanf(fp2, "%s\n", a->contatos[i].religiao);
 			fscanf(fp2, "%s\n", a->contatos[i].cidade);
 			fscanf(fp2, "%s\n", a->contatos[i].estado);
-			//fscanf(fp2, "  ", &bug);
 			i++;
 		}
 	fclose(fp2);
-
-	
 	puts("Leitura feita e armazenada!");
 }
 
 void excluiContato(agenda *a, int i){
+	contato contVazio;
 	a->contatos[i].nome[0] = '\0';
 	a->contatos[i].tel[0] = '\0';
 	a->contatos[i].email[0] = '\0';
@@ -301,7 +253,11 @@ void excluiContato(agenda *a, int i){
 	a->contatos[i].religiao[0] = '\0';
 	a->contatos[i].cidade[0] = '\0';
 	a->contatos[i].estado[0] = '\0';
+	a->contatos[i] = a->contatos[i+1];
+	a->contatos[i+1] = contVazio;
+	a->total--;
 }
+
 
 int main(int argc, char *argv[]) {
 	setlocale(LC_ALL, "Portuguese");
@@ -312,13 +268,9 @@ int main(int argc, char *argv[]) {
 	char nomedoarq[50];
 
 	do{
-		
-	
-	
 	menu();
 	scanf("%d", &op);
 		switch(op){
-			
 			case 1:
 				system("cls");
 				puts("Quantos contatos deseja adicionar?");
@@ -329,7 +281,6 @@ int main(int argc, char *argv[]) {
 					insere(&a, criaContato());
 				}
 				gravaTexto(&a);
-				gravaBinario(&a);
 				system("cls");	
 				break;
 				
@@ -363,11 +314,6 @@ int main(int argc, char *argv[]) {
 				}
 				break;
 			
-			
-			
-			
-			
-			
 			case 3:
 				system("cls");
 				puts("============Alteração de contato============");
@@ -389,11 +335,7 @@ int main(int argc, char *argv[]) {
 				puts("");
 				listaContato(a.contatos[idc]);
 				break;
-			
-			
-			
-			
-			
+	
 			case 4:
 				system("cls");
 				puts("=============Lista de contatos=============");
@@ -401,8 +343,7 @@ int main(int argc, char *argv[]) {
 				listaAgenda(&a);	
 				printf("Total de contatos: %d\n\n", a.total);
 				break;
-				
-
+					
 			case 5:
 				system("cls");
 				puts("Nome do contato a ser excluído");
@@ -413,9 +354,9 @@ int main(int argc, char *argv[]) {
 				excluiContato(&a, idc);
 				system("cls");
 				break;
-
-							
+				
 			case 6:
+				gravaTexto(&a);
 				exit(0);
 				break;
 			default:
